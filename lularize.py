@@ -5,14 +5,14 @@ import argparse
 from PIL import Image, ImageFont, ImageDraw
 
 colors = [
-    (254, 209, 65),
-    (255, 157, 110),
-    (246, 117, 153),
-    (221, 127, 211),
-    (149, 149, 210),
-    (139, 184, 232),
-    (100, 204, 201),
-    (136, 139, 141)]
+    (254, 209, 65),  # yellow
+    (255, 157, 110), # orange
+    (246, 117, 153), # pink
+    (221, 127, 211), # fuschia
+    (149, 149, 210), # purple
+    (139, 184, 232), # blue
+    (100, 204, 201), # mint
+    (136, 139, 141)] # gray
 
 styleData = {
     'joy': {'price': 60, 'sizes': ['xs', 's', 'm', 'l', 'xl']},
@@ -118,6 +118,7 @@ def processImage(file, folder, style, size, watermark, detail, exportPath, delet
     # Style
     draw.rectangle([(finalWidth, 0), (int(finalWidth * 1.5), 130)], fill=color)
     msg = formatStyle(style)
+    # Try to get license from https://www.fontspring.com/custom-licenses
     font = ImageFont.truetype("steelfish rg.ttf", 80)
     msg = msg.upper()
     draw.text((finalWidth + centerText(draw, msg, font, int(finalWidth * 0.5)), 15), msg, (255, 255, 255), font=font)
