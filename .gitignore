@@ -1,3 +1,6 @@
 .DS_STORE
 /build
 /dist
+/lularizer/platforms
+/lularizer/plugins
+node_modules/

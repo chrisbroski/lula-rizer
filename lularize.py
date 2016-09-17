@@ -110,7 +110,7 @@ def processImage(file, folder, style, size, watermark, detail, exportPath, delet
 
     if watermark != '':
         # Official font is Maven Pro Light but regular is extremely close
-        font = ImageFont.truetype("MavenPro-Regular.ttf", 40)
+        font = ImageFont.truetype("www/css/MavenPro-Regular.ttf", 40)
         xWatermark = centerText(draw, watermark, font, finalWidth)
         draw.text((xWatermark + 2, 760), watermark, (0, 0, 0), font=font)
         draw.text((xWatermark, 758), watermark, color, font=font)
@@ -119,12 +119,12 @@ def processImage(file, folder, style, size, watermark, detail, exportPath, delet
     draw.rectangle([(finalWidth, 0), (int(finalWidth * 1.5), 130)], fill=color)
     msg = formatStyle(style)
     # Try to get license from https://www.fontspring.com/custom-licenses
-    font = ImageFont.truetype("steelfish rg.ttf", 80)
+    font = ImageFont.truetype("www/css/steelfish rg.ttf", 80)
     msg = msg.upper()
     draw.text((finalWidth + centerText(draw, msg, font, int(finalWidth * 0.5)), 15), msg, (255, 255, 255), font=font)
 
     # Size
-    font = ImageFont.truetype("steelfish rg.ttf", 100)
+    font = ImageFont.truetype("www/css/steelfish rg.ttf", 100)
     msg = msg.upper()
     draw.text((finalWidth + centerText(draw, size.upper(), font, int(finalWidth * 0.5)), 150), size.upper(), color, font=font)
 
