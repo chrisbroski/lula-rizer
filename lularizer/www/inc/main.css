@@ -1,3 +1,13 @@
+@font-face {
+    font-family: "steelfish";
+    src: url("./steelfish rg.ttf") format("opentype");
+}
+
+@font-face {
+    font-family: "maven";
+    src: url("./MavenProLight-300.otf") format("opentype");
+}
+
 * {
     box-sizing: border-box;
     -webkit-tap-highlight-color: rgba(0,0,0,0);
@@ -17,8 +27,17 @@ body {
 button {
     -webkit-appearance: none;
     -webkit-border-radius: 0;
+    text-transform: uppercase;
+    border: 0 none;
+    font-size: 18px;
+    padding: 8px;
+    background: #fff;
 }
 button:focus {outline: 0 none; }
+button.primary {
+    background: #64ccc9;
+    color: #fff;
+}
 
 article {
     margin-top: 60px;
@@ -31,7 +50,7 @@ article p {
 }
 article li {margin-bottom: 0.3em; line-height: 1.4em; font-size: 16px; }
 
-header {
+body > header {
     position: fixed;
     overflow: auto;
     left: 0; top: 0; right: 0;
@@ -40,14 +59,15 @@ header {
     box-shadow: 0 2px 4px rgba(0, 0, 0, .4);
     color: #fff;
 }
-header h1 {
+body > header h1 {
+    font-family: steelfish;
     margin: 0; padding: 0;
-    font-size: 20px;
+    font-size: 24px;
     font-weight: normal;
     line-height: 56px;
     white-space: nowrap;
 }
-header button, footer button {
+body > header button, body > footer button {
     margin: 0 12px 0 0; padding: 12px;
     width: 56px; height: 56px;
     float: left;
@@ -56,7 +76,7 @@ header button, footer button {
     color: #fff;
 }
 
-header button div {
+body > header button div {
     margin: 3px 4px;
     height: 2px;
     background: #fff;
@@ -68,13 +88,17 @@ section {
     box-shadow: 0 4px 5px 0 rgba(0, 0, 0, .4);
     overflow: auto;
 }
-section img:first-child {
+section img:first-child, section canvas:first-child {
     border-top-left-radius: 2px;
     border-top-right-radius: 2px;
     width: 100%; max-width: 580px;
 }
+section > footer {
+    padding: 8px;
+    text-align: right;
+}
 
-nav {
+body > nav {
     position: absolute;
     top: 0; bottom: 0; left: 0;
     overflow: hidden;
@@ -83,34 +107,34 @@ nav {
     transition: width 0.2s;
 }
 
-nav h2 {
+body > nav h2 {
     margin: 32px 0 16px 16px;
     font-size: 18px;
     font-weight: normal;
     color: #f97599;
 }
-nav p {
+body > nav p {
     margin: 0;
     font-size: 14px;
 }
-nav p a {
+body > nav p a {
     padding: 16px;
     display: block;
     text-decoration: none;
     color: #333;
 }
-nav p a:hover {
+body > nav p a:hover {
     background: #eee;
 }
 
-footer {
+body > footer {
     position: fixed;
     overflow: auto;
     left: 0; bottom: 0; right: 0;
     background: ##f97599;
     height: 56px;
 }
-footer button:first-child {
+body > footer button:first-child {
     font-size: 24px;
 }
 

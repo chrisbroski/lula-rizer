@@ -84,8 +84,9 @@ function Utilities() {
     }*/
 
     aero.buildNav([
-        {"name": "Home", "href": "./"},
+        {"name": "Home", "href": "index.html"},
         {"name": "Add From Camera", "href": "camera.html"},
+        //{"name": "Add From Camera", "href": "edit.html"},
         {"name": "Add From Inventory", "href": "collection.html"},
         {"name": "Manage Inventory", "href": "inventory.html"}
     ]);

@@ -1,0 +1,29 @@
+canvas#preview {
+    background: #fff;
+    max-width: 100%;
+}
+#watermark {width: 100%; font-family: maven; }
+p {margin: 0.5em 0; }
+
+#selectStyle {text-transform: capitalize; }
+
+/* color selection */
+#colors {padding-top: 2px; }
+#colors > div {
+    margin: 0 5px;
+    width: 20px; height: 20px;
+    display: inline-block;
+}
+.selectedColor {
+    box-shadow: 1px 1px 3px black;
+    position: relative;
+    top: -1px; left: -1px;
+}
+#colorYellow {background-color: #fed141; }
+#colorOrange {background-color: #ff9d68; }
+#colorPink {background-color: #f97599; }
+#colorFuchsia {background-color: #dd7fd3; }
+#colorPurple {background-color: #9595d2; }
+#colorBlue {background-color: #8bb8e8; }
+#colorGreen {background-color: #64ccc9; }
+#colorGray {background-color: #888b8d; }
