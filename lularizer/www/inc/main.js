@@ -34,7 +34,7 @@ function Utilities() {
 
         navNav = document.createElement("nav");
         navH2 = document.createElement("h2");
-        navH2.textContent = "Aerophane";
+        navH2.textContent = "Lularizer";
         navNav.appendChild(navH2);
 
         navItems.forEach(function (item) {
