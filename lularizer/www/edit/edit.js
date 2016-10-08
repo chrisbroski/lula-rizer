@@ -187,12 +187,25 @@ function lularize() {
     img.addEventListener("load", function () {
         emboss(this, style, lulalroeColor, size, document.getElementById('watermark').value);
     }, false);
-    img.src = localStorage.getItem('photo');//'album/' + Q$('file'); // Set source path somehow
+    //img.src = localStorage.getItem('photo');//'album/' + Q$('file'); // Set source path somehow
+    //console.log(localStorage.getItem('photo'));
+    img.src = localStorage.getItem('photo');
+    //file:///storage/emulated/0/Android/data/com.chaosscape.lularizer/cache/1475509023259.jpg
 }
 
 function save() {
+    /*window.canvas2ImagePlugin.saveImageDataToLibrary(
+        function(msg){
+            console.log(msg);
+        },
+        function(err){
+            console.log(err);
+        },
+        document.getElementById('preview')
+    );*/
     /* After save, go back to camera or album */
-    var bitmapData = document.getElementById('preview').toDataURL("image/jpeg", 0.85),
+
+    var bitmapData = document.getElementById('preview').toDataURL("image/png"),
         //invString,
         //invObj,
         style = document.getElementById('selectStyle').value;
@@ -201,23 +214,32 @@ function save() {
     // remove leading 'data:image/png;base64,'
     console.log('saving file');
     //saveFile(style + '_' + '.png', window.atob(bitmapData.slice(22)));
-    console.log(bitmapData);
-    writeToFile(style + '_' + '.jpg', window.atob(bitmapData.slice(23)));
+    console.log(bitmapData.slice(22));
+    //writeToFile(style + '_' + '.png', window.atob(bitmapData.slice(22)));
 
     //InputStream stream = new ByteArrayInputStream(Base64.decode(bitmapData, Base64.DEFAULT));
+    var params = {data: bitmapData, prefix: 'lularizer_', format: 'PNG', mediaScanner: true};
+    window.imageSaver.saveBase64Image(params,
+        function (filePath) {
+            invString = localStorage.getItem('inventory');
+            if (!invString) {
+                invObj = {};
+            } else {
+                invObj = JSON.parse(invString);
+            }
 
-    /*invString = localStorage.getItem('inventory');
-    if (!invString) {
-        invObj = {};
-    } else {
-        invObj = JSON.parse(invString);
-    }
+            if (!invObj[style]) {
+                invObj[style] = [];
+            }
+            invObj[style].push(filePath);
+            localStorage.setItem('inventory', JSON.stringify(invObj));
+            console.log('File saved on ' + filePath);
+        },
+        function (msg) {
+            console.error(msg);
+        }
+    );
 
-    if (!invObj[style]) {
-        invObj[style] = [];
-    }
-    invObj[style].push(bitmapData);
-    localStorage.setItem('inventory', JSON.stringify(invObj));*/
     //history.back();
 }
 
@@ -262,7 +284,7 @@ function changeColor(e) {
 // Save to file system
 function saveFile(File_Name, fileData) {
     //step to request a file system
-    console.log('save file ', File_Name);
+    /*console.log('save file ', File_Name);
 
     function fileSystemSuccess(fileSystem) {
         console.log('file system success');
@@ -308,9 +330,10 @@ function saveFile(File_Name, fileData) {
     }
 
     window.requestFileSystem(1, 0, fileSystemSuccess, fileSystemFail);
+    */
 }
 
-function saveFile2(fileName, fileData) {
+function saveData(fileName, fileData) {
     console.log("checkpoint 1");
 
     function onFSSuccess(fileSystem) {
@@ -361,9 +384,6 @@ function writeToFile(fileName, data) {
     }
 }
 
-function saveToRoll() {
-    cordova.plugins.imagesaver.saveImageToGallery(nativePathToJpegImage, successCallback, errorCallback);
-}
 
 function init() {
     if (localStorage.color && colors[localStorage.color]) {
