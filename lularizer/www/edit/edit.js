@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, devel: true */
-/*global aero */
+/*global aero, cordova, Blob */
 
 var styleData = {
     "joy": {"price": 60, "sizes": ["xs", "s", "m", "l", "xl"]},
@@ -33,7 +33,7 @@ var styleData = {
     "ana": {"price": 60, "sizes": ["xs", "s", "m", "l", "xl", "2xl", "3xl"]},
     "amelia": {"price": 65, "sizes": ["xxs", "xs", "s", "m", "l", "xl", "2xl"]},
     "carly": {"price": 55, "sizes": ["xxxs", "xxs", "xs", "s", "m", "l", "xl", "xxl", "xxxl"]}
-};
+}, dataJSON;
 
 var colors = {
     'colorYellow': '#fed141',
@@ -188,40 +188,61 @@ function lularize() {
         emboss(this, style, lulalroeColor, size, document.getElementById('watermark').value);
     }, false);
     //img.src = localStorage.getItem('photo');//'album/' + Q$('file'); // Set source path somehow
-    //console.log(localStorage.getItem('photo'));
+    console.log(localStorage.getItem('photo'));
     img.src = localStorage.getItem('photo');
     //file:///storage/emulated/0/Android/data/com.chaosscape.lularizer/cache/1475509023259.jpg
 }
 
-function save() {
-    /*window.canvas2ImagePlugin.saveImageDataToLibrary(
-        function(msg){
-            console.log(msg);
-        },
-        function(err){
-            console.log(err);
-        },
-        document.getElementById('preview')
-    );*/
+function setFileJSON(objJSON) {
+    dataJSON.createWriter(function (fileWriter) {
+        //fileWriter.seek(fileWriter.length);
+
+        //var blob = new Blob(JSON.stringify(objJSON), {type: 'text/plain'});
+        fileWriter.write(JSON.stringify(objJSON));
+        console.log("wrote to data");
+    });
+}
+
+function getJsonData(callback) {
+    dataJSON.file(function (file) {
+        //console.log('getting file');
+        var reader = new FileReader();
+
+        reader.onloadend = function (e) {
+            console.log(this.result);
+            callback(JSON.parse(this.result));
+            //document.getElementById('imageFile').src = jsonData.lucy[0].file;
+        };
+
+        reader.readAsText(file);
+    });
+}
+
+function addJsonData(style, filePath) {
+    getJsonData(function (data) {
+        if (!data[style]) {
+            data[style] = [];
+        }
+        data[style].push({"file": filePath});
+        setFileJSON(data);
+    });
+}
+
+function saveImage() {
     /* After save, go back to camera or album */
 
     var bitmapData = document.getElementById('preview').toDataURL("image/png"),
-        //invString,
-        //invObj,
-        style = document.getElementById('selectStyle').value;
+        style = document.getElementById('selectStyle').value,
+        params = {data: bitmapData, prefix: 'lularizer_', format: 'PNG', mediaScanner: true};
 
-    //console.log(bitmapData);
-    // remove leading 'data:image/png;base64,'
-    console.log('saving file');
-    //saveFile(style + '_' + '.png', window.atob(bitmapData.slice(22)));
-    console.log(bitmapData.slice(22));
-    //writeToFile(style + '_' + '.png', window.atob(bitmapData.slice(22)));
-
-    //InputStream stream = new ByteArrayInputStream(Base64.decode(bitmapData, Base64.DEFAULT));
-    var params = {data: bitmapData, prefix: 'lularizer_', format: 'PNG', mediaScanner: true};
-    window.imageSaver.saveBase64Image(params,
+    window.imageSaver.saveBase64Image(
+        params,
         function (filePath) {
-            invString = localStorage.getItem('inventory');
+            addJsonData(style, filePath);
+            //var data = {};
+            //data[style] = [{"file": filePath}];
+            // Save data to JSON file
+            /*invString = localStorage.getItem('inventory');
             if (!invString) {
                 invObj = {};
             } else {
@@ -232,8 +253,14 @@ function save() {
                 invObj[style] = [];
             }
             invObj[style].push(filePath);
-            localStorage.setItem('inventory', JSON.stringify(invObj));
-            console.log('File saved on ' + filePath);
+            localStorage.setItem('inventory', JSON.stringify(invObj));*/
+            //setFileJSON(data);
+            //console.log('File saved on ' + filePath);
+            //saveData(style, filePath);
+            //addJsonData(style, filePath)
+
+            // get json
+            // get file
         },
         function (msg) {
             console.error(msg);
@@ -281,110 +308,6 @@ function changeColor(e) {
     }
 }
 
-// Save to file system
-function saveFile(File_Name, fileData) {
-    //step to request a file system
-    /*console.log('save file ', File_Name);
-
-    function fileSystemSuccess(fileSystem) {
-        console.log('file system success');
-        console.log(fileSystem.name);
-        var directoryEntry = fileSystem.root;
-        directoryEntry.getDirectory('lularizer', {create: true, exclusive: false}, onDirectorySuccess, onDirectoryFail);
-        var rootdir = fileSystem.root;
-        var fp = rootdir.fullPath;
-        console.log(fp);
-
-        fp = fp + "/lularizer/" + File_Name; // fullpath and name of the file which we want to give
-        console.log(fp);
-
-        fileSystem.root.getFile(fp, {create: true, exclusive: false}, gotFileEntry, fileSystemFail);
-        // download function call
-        //filetransfer(download_link, fp);
-    }
-    function gotFileEntry(fileEntry) {
-        console.log("checkpoint 3");
-        fileEntry.createWriter(gotFileWriter, fileSystemFail);
-    }
-    function gotFileWriter(writer) {
-        writer.onwrite = function(evt) {
-            console.log("checkpoint 4: write success!");
-        };
-        writer.write('test');
-    }
-
-    function onDirectorySuccess(parent) {
-        // Directory created successfuly
-        console.log('created directory');
-    }
-
-    function onDirectoryFail(error) {
-        //Error while creating directory
-        alert("Unable to create new directory: " + error.code);
-    }
-
-    function fileSystemFail(evt) {
-        //Unable to access file system
-        //alert(evt.target.error.code);
-        console.log(evt);
-    }
-
-    window.requestFileSystem(1, 0, fileSystemSuccess, fileSystemFail);
-    */
-}
-
-function saveData(fileName, fileData) {
-    console.log("checkpoint 1");
-
-    function onFSSuccess(fileSystem) {
-        console.log("checkpoint 2");
-        console.log("Opened file system: " + fileSystem.name);
-        fileSystem.root.getFile(fileName, {create: true, exclusive: false}, gotFileEntry, onFSError);
-    }
-    function gotFileEntry(fileEntry) {
-        console.log("checkpoint 3");
-        fileEntry.createWriter(gotFileWriter, onFSError);
-    }
-    function gotFileWriter(writer) {
-        writer.onwrite = function(evt) {
-            console.log("checkpoint 4: write success!");
-        };
-        writer.write(fileData);
-    }
-    function onFSError(err) {
-        console.log(err.code);
-    }
-
-    window.requestFileSystem(1, 0, onFSSuccess, onFSError);
-}
-
-function writeToFile(fileName, data) {
-    //data = JSON.stringify(data, null, '\t');
-    window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (directoryEntry) {
-        directoryEntry.getFile(fileName, { create: true }, function (fileEntry) {
-            fileEntry.createWriter(function (fileWriter) {
-                fileWriter.onwriteend = function (e) {
-                    // for real-world usage, you might consider passing a success callback
-                    console.log('Write of file "' + fileName + '"" completed.');
-                };
-
-                fileWriter.onerror = function (e) {
-                    // you could hook this up with our global error handler, or pass in an error callback
-                    console.log('Write failed: ' + e.toString());
-                };
-
-                var blob = new Blob([data], {type: 'img/png'});
-                fileWriter.write(blob);
-            }, errorHandler);
-        }, errorHandler);
-    }, errorHandler);
-
-    function errorHandler(e) {
-        console.log(e);
-    }
-}
-
-
 function init() {
     if (localStorage.color && colors[localStorage.color]) {
         color = localStorage.color;
@@ -407,7 +330,19 @@ function load() {
     aero.touchclick(document.getElementById('colors'), changeColor);
     document.getElementById('watermark').onchange = lularize;
 
-    document.addEventListener("deviceready", lularize);
+    aero.setPageDeviceReady(function () {
+        lularize();
+        console.log('lularized');
+
+        window.resolveLocalFileSystemURL(cordova.file.dataDirectory, function (dir) {
+            console.log("got main dir", dir);
+            dir.getFile("data.json", {create: true}, function (file) {
+                console.log("got the file", file);
+                dataJSON = file;
+                console.log("App started");
+            });
+        });
+    });
     //window.setTimeout(lularize, 50);
 }
 

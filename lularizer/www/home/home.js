@@ -34,13 +34,13 @@ cameraInit();*/
 
     function cameraPicture(pic) {
         //console.log(pic);
-        //localStorage.setItem('photo', pic);
-        //window.location = 'edit.html';
-        console.log('took pic');
+        localStorage.setItem('photo', pic);
+        window.location = '../edit/edit.html';
+        //console.log('took pic');
     }
 
     function cameraFail(err) {
-        console.log(err);
+        window.console.log(err);
     }
 
     function onDeviceReady() {
@@ -52,7 +52,7 @@ cameraInit();*/
                 //saveToPhotoAlbum: true
                 DestinationType: 0
             });
-        }
+        };
     }
 
     aero.setPageDeviceReady(onDeviceReady);
