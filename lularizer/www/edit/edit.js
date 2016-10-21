@@ -194,7 +194,9 @@ function lularize() {
 }
 
 function setFileJSON(objJSON) {
+    console.log("setFileJSON");
     dataJSON.createWriter(function (fileWriter) {
+        console.log("createWriter");
         //fileWriter.seek(fileWriter.length);
 
         //var blob = new Blob(JSON.stringify(objJSON), {type: 'text/plain'});
@@ -205,12 +207,16 @@ function setFileJSON(objJSON) {
 
 function getJsonData(callback) {
     dataJSON.file(function (file) {
-        //console.log('getting file');
+        console.log('getting file');
         var reader = new FileReader();
 
         reader.onloadend = function (e) {
-            console.log(this.result);
-            callback(JSON.parse(this.result));
+            var data = this.result;
+            console.log(data);
+            if (!data) {
+                data = "{}";
+            }
+            callback(JSON.parse(data));
             //document.getElementById('imageFile').src = jsonData.lucy[0].file;
         };
 
@@ -219,11 +225,14 @@ function getJsonData(callback) {
 }
 
 function addJsonData(style, filePath) {
+    console.log(style, filePath);
     getJsonData(function (data) {
+        console.log("gjd callback");
         if (!data[style]) {
             data[style] = [];
         }
         data[style].push({"file": filePath});
+        console.log(data);
         setFileJSON(data);
     });
 }
