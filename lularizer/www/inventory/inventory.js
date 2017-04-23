@@ -1,5 +1,5 @@
-/*jslint browser: true */
-/*globals aero */
+/*jslint browser: true, devel: true */
+/*globals cordova, aero, FileReader */
 
 var dataJSON;
 
@@ -15,9 +15,17 @@ function listLLR(data) {
             section.appendChild(title);
 
             data[style].forEach(function (pic) {
-                img = document.createElement('img');
+                //img = document.createElement('img');
+                img = new Image();
+                img.onload = function (e) {
+                    section.appendChild(e.target);
+                };
+                img.onerror = function (e) {
+                    console.log('error!', e.target.src);
+                    // remove from data list
+                };
                 img.src = pic.file;
-                section.appendChild(img);
+
             });
 
             article.appendChild(section);
@@ -26,11 +34,11 @@ function listLLR(data) {
 }
 
 function getJsonData(callback) {
-    dataJSON.file(function(file) {
+    dataJSON.file(function (file) {
         console.log('getting file');
         var reader = new FileReader();
 
-        reader.onloadend = function(e) {
+        reader.onloadend = function (e) {
             console.log(this.result);
             callback(JSON.parse(this.result));
             //document.getElementById('imageFile').src = jsonData.lucy[0].file;

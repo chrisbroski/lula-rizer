@@ -8,7 +8,6 @@
         Chris Broski
     </author>
     <content src="home/home.html" />
-    <plugin name="cordova-plugin-whitelist" spec="1" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
     <allow-intent href="https://*/*" />
@@ -25,4 +24,11 @@
     </platform>
     <preference name="Orientation" value="portrait" />
     <preference name="AndroidPersistentFileLocation" value="Compatibility" />
+    <plugin name="cordova-plugin-whitelist" spec="1" />
+    <plugin name="cordova-plugin-camera" spec="~2.3.0">
+        <variable name="CAMERA_USAGE_DESCRIPTION" value=" " />
+        <variable name="PHOTOLIBRARY_USAGE_DESCRIPTION" value=" " />
+    </plugin>
+    <plugin name="cordova-plugin-file" spec="~4.3.0" />
+    <plugin name="cordova-save-image-gallery" spec="~0.0.26" />
 </widget>

@@ -1,5 +1,5 @@
 /*jslint browser: true, sloppy: true, devel: true */
-/*global aero, cordova, Blob */
+/*global aero, cordova, Blob, FileReader */
 
 var styleData = {
     "joy": {"price": 60, "sizes": ["xs", "s", "m", "l", "xl"]},
@@ -242,11 +242,12 @@ function saveImage() {
 
     var bitmapData = document.getElementById('preview').toDataURL("image/png"),
         style = document.getElementById('selectStyle').value,
-        params = {data: bitmapData, prefix: 'lularizer_', format: 'PNG', mediaScanner: true};
+        params = {data: bitmapData, prefix: 'lularizer_', format: 'PNG', mediaScanner: false, quality: 80};
 
     window.imageSaver.saveBase64Image(
         params,
         function (filePath) {
+            console.log(filePath);
             addJsonData(style, filePath);
             //var data = {};
             //data[style] = [{"file": filePath}];
